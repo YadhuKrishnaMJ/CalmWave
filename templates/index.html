@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Recognition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Background -->
+     
+    <video autoplay muted loop id="background-video">
+        <source src="static/coolbg.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <!-- Cool Title -->
+    <div class="container">
+        <div class="neon"> Calm </div>
+        <div class="flux"> Wave </div>
+      </div>
+    <!-- Cool Infographics -->
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Cool Upload buttons -->
+    <div class="container1">
+        <h1> AI powered Brainwaves to Induce Sleep </h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".wav" required>
+
+            <!-- Fancy Submit Button -->
+
+            <button class="button-40" role="button">
+                <span class="text"> Submit and Analyse </span>
+            </button>
+
+
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <!-- Cool Links -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <ul>
+        <li>
+            <a href="#">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fab fa-github"></i>
+            </a>
+
+        </li>
+        <li>
+            <a href="#">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </li>
+    </ul>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const resultDiv = document.getElementById('result');
+            const data = await response.json();
+
+            if (response.ok) {
+                resultDiv.innerHTML = `<p>Predicted Emotion: <strong>${data.emotion}</strong></p>`;
+            } else {
+                resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
