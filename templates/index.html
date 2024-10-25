@@ -10,71 +10,46 @@
 
 <body>
     <!-- Background -->
-     
     <video autoplay muted loop id="background-video">
         <source src="static/coolbg.mp4" type="video/mp4">
         Your browser does not support HTML5 video.
     </video>
     <!-- Cool Title -->
     <div class="container">
-        <div class="neon"> Calm </div>
-        <div class="flux"> Wave </div>
-      </div>
-    <!-- Cool Infographics -->
-
-
-
-
-
-
-
-
-
-
+        <div class="neon">Calm</div>
+        <div class="flux">Wave</div>
+    </div>
 
     <!-- Cool Upload buttons -->
     <div class="container1">
-        <h1> AI powered Brainwaves to Induce Sleep </h1>
+        <h1>AI powered Brainwaves to Induce Sleep</h1>
+
+        <div class="card">
+            Upload your most recent audio recording! <br><br>
+            Upload your selfie of the day! <br><br>
+            Let AI power your sleep!
+        </div>
         <form id="uploadForm" enctype="multipart/form-data">
             <input type="file" name="file" accept=".wav" required>
 
             <!-- Fancy Submit Button -->
-
             <button class="button-40" role="button">
-                <span class="text"> Submit and Analyse </span>
+                <span class="text">Submit and Analyse</span>
             </button>
-
-
         </form>
 
         <div id="result" class="result"></div>
+        <audio id="audioPlayer" controls style="display:none;"></audio>
     </div>
 
     <!-- Cool Links -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
         integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <ul>
-        <li>
-            <a href="#">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fab fa-youtube"></i>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fab fa-github"></i>
-            </a>
-
-        </li>
-        <li>
-            <a href="#">
-                <i class="fab fa-linkedin"></i>
-            </a>
-        </li>
+        <li><a href="https://www.instagram.com/yadddhuuu/"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="https://www.youtube.com/@Yadhu-Dev"><i class="fab fa-youtube"></i></a></li>
+        <li><a href="https://github.com/YadhuKrishnaMJ/CalmWave"><i class="fab fa-github"></i></a></li>
+        <li><a href="https://linkedin.com/in/yadhu-krishna-m-j-1b5478233/"><i class="fab fa-linkedin"></i></a></li>
     </ul>
 
     <script>
@@ -89,12 +64,22 @@
             });
 
             const resultDiv = document.getElementById('result');
+            const audioPlayer = document.getElementById('audioPlayer');
             const data = await response.json();
 
             if (response.ok) {
-                resultDiv.innerHTML = `<p>Predicted Emotion: <strong>${data.emotion}</strong></p>`;
+                resultDiv.innerHTML = `<p>You seem to be <strong>${data.emotion}!</strong> Here's Personalized Binaural Beat to help you sleep!</p>`;
+                
+                if (data.audio) {
+                    audioPlayer.src = `/audio/${data.audio}`;
+                    audioPlayer.style.display = 'block';
+                    audioPlayer.play();
+                } else {
+                    audioPlayer.style.display = 'none';
+                }
             } else {
                 resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+                audioPlayer.style.display = 'none';
             }
         });
     </script>
